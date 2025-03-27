@@ -3,6 +3,26 @@ import { Button, Container, ListGroup, ListGroupItem, Form, Row, Col } from 'rea
 
 const authToken = process.env.REACT_APP_API_KEY
 
+const updateTodo = async (todo) => {
+  try {
+    const response = await fetch(`/api/collections/Todos-349528/${todo.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
+      },
+      body: JSON.stringify(todo)
+    })
+
+    const responseData = await response.json()
+    return responseData.body
+  }
+  catch (error) {
+    console.error('Error updating Todo', error)
+  }
+}
+
+
 const getAllTodos = async () => {
   try {
     const response = await fetch('/api/collections/Todos-349528', {
@@ -32,21 +52,16 @@ const createNewTodo = async (todo) => {
       body: JSON.stringify(todo)
     })
 
-    console.log(JSON.stringify(todo))
-
     const responseData = await response.json()
     return responseData.body
   }
   catch (error) {
-    console.error('Error getting Todos', error)
+    console.error('Error creating Todo', error)
   }
 }
 
 
 const deleteTodo = async (id) => {
-
-
-  console.log(id)
 
   try {
     const response = await fetch(`/api/collections/Todos-349528/${id}`, {
@@ -67,7 +82,7 @@ const deleteTodo = async (id) => {
 
 const App = () => {
 
-  const [todo, setTodo] = useState({id: '', body: '', isDone: false })
+  const [todo, setTodo] = useState({ id: '', body: '', isDone: false })
   const [todos, setTodos] = useState([])
 
   useEffect(() => {
@@ -94,8 +109,18 @@ const App = () => {
   }
 
   const handleToggleDone = (index) => {
-    const updatedTodos = todos.map((todo, i) =>
-      i === index ? { ...todo, isDone: !todo.isDone } : todo
+    const updatedTodos = todos.map((todo, i) => {
+
+      if (i === index) {
+        const updatedTodo = { ...todo, isDone: !todo.isDone }
+        updateTodo(updatedTodo)
+        return updatedTodo
+      }
+
+      else {
+        return todo
+      }
+    }
     )
     setTodos(updatedTodos)
   }
@@ -120,9 +145,9 @@ const App = () => {
           />
         </Col>
         <Col>
-          <Button variant='primary' onClick={handleAddTodo} className='w-100'>
+          {todo.body && <Button variant='primary' onClick={handleAddTodo} className='w-100'>
             Add Todo
-          </Button>
+          </Button>}
         </Col>
       </Row>
       <ListGroup>
