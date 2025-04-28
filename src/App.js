@@ -5,7 +5,7 @@ const authToken = process.env.REACT_APP_API_KEY
 
 const updateTodo = async (todo) => {
   try {
-    const response = await fetch(`/api/collections/Todos-202994/${todo.id}`, {
+    const response = await fetch(`/api/collections/todos-029995/${todo.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ const updateTodo = async (todo) => {
 
 const getAllTodos = async () => {
   try {
-    const response = await fetch('/api/collections/Todos-202994', {
+    const response = await fetch('/api/collections/todos-029995', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const getAllTodos = async () => {
 
 const createNewTodo = async (todo) => {
   try {
-    const response = await fetch('/api/collections/Todos-202994', {
+    const response = await fetch('/api/collections/todos-029995', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const createNewTodo = async (todo) => {
 const deleteTodo = async (id) => {
 
   try {
-    const response = await fetch(`/api/collections/Todos-202994/${id}`, {
+    const response = await fetch(`/api/collections/todos-029995/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
